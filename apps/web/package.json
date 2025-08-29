@@ -1,0 +1,12 @@
+{
+  "name": "bharatone-web",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Next.js 14 frontend for the BharatOne social platform.",
+  "scripts": {
+    "dev": "echo 'Run your dev server command here'",
+    "build": "echo 'Run your build command here'",
+    "start": "echo 'Run your start command here'",
+    "lint": "echo 'Run your linter here'"
+  }
+}

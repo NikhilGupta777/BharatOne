@@ -1,0 +1,5 @@
+{
+  "name": "BharatOne Social Platform",
+  "description": "A React-based prototype of the BharatOne social platform, unifying features from Twitter, Instagram, and Facebook. It includes a unified feed, a versatile composer, communities, events, and more, all built with a modern, responsive UI using Tailwind CSS.",
+  "requestFramePermissions": []
+}
