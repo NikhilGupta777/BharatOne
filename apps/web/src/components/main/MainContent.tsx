@@ -5,6 +5,8 @@ import StoryRow from '../post/StoryRow';
 import PostCard from '../post/PostCard';
 import { useI18n } from '../../i18n/I18nProvider';
 import { fmtCount } from '../../lib/utils';
+import { BookmarksIcon, FilledBookmarksIcon } from '../shared/Icons';
+import type { Post } from '../../lib/types';
 
 const HomeView: React.FC = () => {
     const { rankedFeed, data, t } = useAppContext();
@@ -62,7 +64,7 @@ const CommunitiesView: React.FC = () => {
             </div>
             <div className="space-y-3">
             {data.communities.map(c => (
-                 <div key={c.id} className="flex items-center gap-3 p-3 rounded-lg bg-panel-2 border border-border-color">
+                 <div key={c.id} className="flex items-center gap-3 p-3 rounded-xl bg-panel-2 border border-border-color">
                     <Avatar size="sm" />
                     <div className="flex-1">
                         <p className="font-bold text-sm">{c.name}</p>
@@ -88,8 +90,8 @@ const EventsView: React.FC = () => {
             </div>
             <div className="space-y-3">
             {data.events.map(ev => (
-                 <div key={ev.id} className="flex items-start gap-3 p-3 rounded-lg bg-panel-2 border border-border-color">
-                    <img src={ev.cover} alt={ev.title} className="w-24 h-16 object-cover rounded"/>
+                 <div key={ev.id} className="flex items-start gap-3 p-3 rounded-xl bg-panel-2 border border-border-color">
+                    <img src={ev.cover} alt={ev.title} className="w-24 h-16 object-cover rounded-md"/>
                     <div className="flex-1">
                         <p className="font-bold text-sm">{ev.title}</p>
                         <p className="text-xs text-text-muted">{new Date(ev.when).toLocaleString()}</p>
@@ -139,9 +141,17 @@ const ProfileView: React.FC = () => {
     const userPosts = data.feed.filter(p => p.author.id === profileUser.id);
     const savedPosts = data.feed.filter(p => data.bookmarks.has(p.id));
 
-    const TABS = {
+    // FIX: Define a type for tab data to ensure consistent shape with optional icon properties.
+    type TabData = {
+        label: string;
+        content: Post[];
+        icon?: React.ElementType;
+        activeIcon?: React.ElementType;
+    };
+
+    const TABS: { [key: string]: TabData } = {
         posts: { label: t('posts'), content: userPosts },
-        ...(isCurrentUser && { saved: { label: t('saved'), content: savedPosts } })
+        ...(isCurrentUser && { saved: { label: t('saved'), content: savedPosts, icon: BookmarksIcon, activeIcon: FilledBookmarksIcon } })
     };
     
     return (
@@ -176,15 +186,20 @@ const ProfileView: React.FC = () => {
                 </div>
             </div>
             <div className="border-b border-border-color flex">
-                {Object.entries(TABS).map(([key, {label}]) => (
-                    <button 
-                        key={key}
-                        onClick={() => setActiveTab(key)}
-                        className={`flex-1 p-3 text-sm font-semibold text-center transition-colors ${activeTab === key ? 'border-b-2 border-brand text-text-primary' : 'text-text-muted hover:bg-panel-2'}`}
-                    >
-                        {label}
-                    </button>
-                ))}
+                {Object.entries(TABS).map(([key, tabData]) => {
+                    const isActive = activeTab === key;
+                    const Icon = isActive && tabData.activeIcon ? tabData.activeIcon : tabData.icon;
+                    return (
+                        <button 
+                            key={key}
+                            onClick={() => setActiveTab(key)}
+                            className={`flex-1 p-3 text-sm font-semibold text-center transition-colors flex items-center justify-center gap-2 ${isActive ? 'border-b-2 border-brand text-text-primary' : 'text-text-muted hover:bg-panel-2'}`}
+                        >
+                            {Icon && <Icon className="w-4 h-4" />}
+                            <span>{tabData.label}</span>
+                        </button>
+                    )
+                })}
             </div>
             <div>
                 {TABS[activeTab as keyof typeof TABS].content.length > 0 ? (

@@ -2,9 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --bg: #0f1115;
+  --panel: #141821;
+  --panel-2: #0d1117;
+  --text: #e6e6e6;
+  --muted: #9ba4b5;
+  --brand: #ff7a00;
+  --brand-hover: #fb923c; /* A slightly lighter orange for hover */
+  --border: #232a36;
+  --chip: #1f2430;
+  --chip-text: #cbd5e1;
+  --story-ring: conic-gradient(#ff7a00, #ffd166, #33d9b2, #70a1ff, #ff7a00);
+  --shadow: 0 10px 30px rgba(0,0,0,.35);
+}
+
 body {
-  background-color: #0f1115;
-  color: #e6e6e6;
+  background-color: var(--bg);
+  color: var(--text);
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -19,4 +34,8 @@ body {
   .app-grid-container {
     grid-template-columns: 240px 1fr 360px;
   }
+}
+
+.story-ring {
+    background: var(--story-ring);
 }

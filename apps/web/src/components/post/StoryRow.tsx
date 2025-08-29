@@ -1,6 +1,5 @@
 import React from 'react';
 import type { Story } from '../../lib/types';
-import { Avatar } from '../shared/common';
 
 interface StoryRowProps {
   stories: Story[];
@@ -8,8 +7,8 @@ interface StoryRowProps {
 
 const StoryItem: React.FC<{ story: Story }> = ({ story }) => (
   <div className="flex flex-col items-center gap-2 cursor-pointer w-20 flex-shrink-0">
-    <div className="w-16 h-16 rounded-full p-0.5 bg-gradient-to-tr from-orange-500 via-yellow-400 to-teal-400">
-      <div className="w-full h-full rounded-full bg-[#0b0f14] p-0.5">
+    <div className="w-16 h-16 rounded-full p-0.5 story-ring">
+      <div className="w-full h-full rounded-full bg-panel-2 p-0.5">
         <img src={story.img} alt={story.user} className="w-full h-full rounded-full object-cover"/>
       </div>
     </div>

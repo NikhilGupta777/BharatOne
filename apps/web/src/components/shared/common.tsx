@@ -16,7 +16,7 @@ export const Avatar: React.FC<{ size?: 'sm' | 'md' | 'lg', className?: string }>
 
 export const Chip: React.FC<{ children: React.ReactNode, onClick?: () => void, className?: string }> = ({ children, onClick, className }) => (
     <div 
-        className={`bg-[#1f2430] text-[#cbd5e1] border border-border-color py-1.5 px-2.5 rounded-full text-xs whitespace-nowrap cursor-pointer hover:bg-[#262c38] ${className}`}
+        className={`bg-chip text-chip-text border border-border-color py-1 px-2.5 rounded-full text-xs whitespace-nowrap cursor-pointer hover:bg-[#262c38] ${className}`}
         onClick={onClick}
     >
         {children}
@@ -28,9 +28,9 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 export const Button: React.FC<ButtonProps> = ({ children, variant = 'secondary', className = '', ...props }) => {
-    const baseClasses = 'px-3 py-2 rounded-[10px] cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed transition-colors text-sm';
+    const baseClasses = 'px-4 py-2 rounded-[10px] cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed transition-colors text-sm font-semibold';
     const variantClasses = {
-        primary: 'bg-brand border border-[#a74800] text-[#18130a] font-bold hover:bg-orange-500',
+        primary: 'bg-brand border border-brand text-white hover:bg-brand-hover',
         secondary: 'bg-[#1a2130] border border-border-color text-text-primary hover:bg-[#222b3f]',
         ghost: 'bg-transparent border border-transparent hover:bg-[#1a2130]',
     };
@@ -38,7 +38,7 @@ export const Button: React.FC<ButtonProps> = ({ children, variant = 'secondary',
 };
 
 export const Panel: React.FC<{ children: React.ReactNode, className?: string }> = ({ children, className = '' }) => (
-    <div className={`bg-panel border border-border-color rounded-lg shadow-[0_10px_30px_rgba(0,0,0,.35)] ${className}`}>
+    <div className={`bg-panel border border-border-color rounded-xl shadow-custom ${className}`}>
         {children}
     </div>
 );

@@ -8,18 +8,23 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        'brand': '#ff7a00',
-        'brand-2': '#007f5f',
-        'panel': '#141821',
-        'panel-2': '#0d1117',
-        'background': '#0f1115',
-        'text-primary': '#e6e6e6',
-        'text-muted': '#9ba4b5',
-        'border-color': '#232a36',
+        'brand': 'var(--brand)',
+        'brand-hover': 'var(--brand-hover)',
+        'panel': 'var(--panel)',
+        'panel-2': 'var(--panel-2)',
+        'background': 'var(--bg)',
+        'text-primary': 'var(--text)',
+        'text-muted': 'var(--muted)',
+        'border-color': 'var(--border)',
+        'chip': 'var(--chip)',
+        'chip-text': 'var(--chip-text)',
       },
       borderRadius: {
         'lg': '14px',
-        'xl': '22px',
+        'xl': '14px', // Updated to match screenshot
+      },
+      boxShadow: {
+        'custom': 'var(--shadow)',
       }
     },
   },
