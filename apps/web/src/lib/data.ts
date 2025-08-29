@@ -1,4 +1,4 @@
-import type { AppData, User } from './types';
+import type { AppData, User, Comment } from './types';
 
 const now = new Date();
 
@@ -63,6 +63,12 @@ export const allUsers: User[] = [
 
 const mainUser = allUsers.find(u => u.id === 'u_me')!;
 
+const sampleComments: Comment[] = [
+    { id: 'c1', author: allUsers[2], text: 'This is amazing! Great work.', createdAt: new Date(now.getTime() - 5 * 60 * 1000) },
+    { id: 'c2', author: allUsers[4], text: 'Absolutely agree. Well said.', createdAt: new Date(now.getTime() - 3 * 60 * 1000) },
+    { id: 'c3', author: allUsers[1], text: 'Beautiful pictures!', createdAt: new Date(now.getTime() - 8 * 60 * 1000) },
+];
+
 export const initialData: AppData = {
   isAdmin: true,
   quietHours: false,
@@ -92,23 +98,23 @@ export const initialData: AppData = {
     { id: 'e2', title: 'Hackathon 2025', when: '2025-11-22T10:00', where: 'Online', cover: 'https://picsum.photos/id/2/800/400', going: true },
   ],
   feed: [
-    { id:'p1', type:'note', author: allUsers.find(u => u.id === 'u4')!, time:'2m', createdAt: new Date(now.getTime() - 2 * 60 * 1000), text:'Just finished #Trisandhya 🌸✨', vis:'public', likes:12, comments:3, reposts:1 },
+    { id:'p1', type:'note', author: allUsers.find(u => u.id === 'u4')!, time:'2m', createdAt: new Date(now.getTime() - 2 * 60 * 1000), text:'Just finished #Trisandhya 🌸✨', vis:'public', likes:12, comments: [sampleComments[1]], reposts:1 },
     { id:'p2', type:'album', author: allUsers.find(u => u.id === 'u2')!, time:'10m', createdAt: new Date(now.getTime() - 10 * 60 * 1000), text:'Seva at Puri Mandir 🙏', images:[
       'https://picsum.photos/id/40/800/600',
       'https://picsum.photos/id/41/800/600',
       'https://picsum.photos/id/42/800/600'
-    ], alt:'Devotees at temple', vis:'public', likes:120, comments:45, reposts:10 },
-    { id:'p3', type:'clip', author: allUsers.find(u => u.id === 'u5')!, time:'18m', createdAt: new Date(now.getTime() - 18 * 60 * 1000), text:'Festival prep in Delhi 🎉', video:'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4', vis:'public', likes:3200, comments:260, reposts:102 },
-    { id:'p4', type:'community', author: allUsers.find(u => u.id === 'u2')!, time:'22m', createdAt: new Date(now.getTime() - 22 * 60 * 1000), text:'Meetup at IIT Delhi, 4pm this Saturday', community:'Bharat Devs', vis:'community', likes:44, comments:12, reposts:0 },
-    { id:'p5', type:'event', author: allUsers.find(u => u.id === 'u_me')!, time:'1h', createdAt: new Date(now.getTime() - 60 * 60 * 1000), text:'Who is joining the Navratri Seva Drive?', eventId:'e1', vis:'public', likes:12, comments:1, reposts:0 },
-    { id:'p6', type:'thread', author: allUsers.find(u => u.id === 'u6')!, time:'2h', createdAt: new Date(now.getTime() - 2 * 60 * 60 * 1000), title:'5 lessons from my first hackathon', parts:["Prep beats luck","Build the smallest demo","Show, don’t tell","Ask for feedback","Ship even if imperfect"], text: '', vis:'public', likes:210, comments:46, reposts:12 },
-    { id:'p7', type:'note', author: allUsers.find(u => u.id === 'u2')!, time:'3h', createdAt: new Date(now.getTime() - 3 * 60 * 60 * 1000), text:'The sunrise today was incredible. #Odisha', vis:'public', likes:250, comments:18, reposts:5 },
-    { id:'p8', type:'note', author: allUsers.find(u => u.id === 'u7')!, time:'5h', createdAt: new Date(now.getTime() - 5 * 60 * 60 * 1000), text:'Excited to announce our pre-seed funding round! The journey is just beginning. #StartupIndia #MakeInIndia', vis:'public', likes:1200, comments:80, reposts:95 },
+    ], alt:'Devotees at temple', vis:'public', likes:120, comments: [sampleComments[2], sampleComments[0]], reposts:10 },
+    { id:'p3', type:'clip', author: allUsers.find(u => u.id === 'u5')!, time:'18m', createdAt: new Date(now.getTime() - 18 * 60 * 1000), text:'Festival prep in Delhi 🎉', video:'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4', vis:'public', likes:3200, comments: [], reposts:102 },
+    { id:'p4', type:'community', author: allUsers.find(u => u.id === 'u2')!, time:'22m', createdAt: new Date(now.getTime() - 22 * 60 * 1000), text:'Meetup at IIT Delhi, 4pm this Saturday', community:'Bharat Devs', vis:'community', likes:44, comments: [], reposts:0 },
+    { id:'p5', type:'event', author: allUsers.find(u => u.id === 'u_me')!, time:'1h', createdAt: new Date(now.getTime() - 60 * 60 * 1000), text:'Who is joining the Navratri Seva Drive?', eventId:'e1', vis:'public', likes:12, comments: [], reposts:0 },
+    { id:'p6', type:'thread', author: allUsers.find(u => u.id === 'u6')!, time:'2h', createdAt: new Date(now.getTime() - 2 * 60 * 60 * 1000), title:'5 lessons from my first hackathon', parts:["Prep beats luck","Build the smallest demo","Show, don’t tell","Ask for feedback","Ship even if imperfect"], text: '', vis:'public', likes:210, comments: [sampleComments[0], sampleComments[1], sampleComments[2]], reposts:12 },
+    { id:'p7', type:'note', author: allUsers.find(u => u.id === 'u2')!, time:'3h', createdAt: new Date(now.getTime() - 3 * 60 * 60 * 1000), text:'The sunrise today was incredible. #Odisha', vis:'public', likes:250, comments: [], reposts:5 },
+    { id:'p8', type:'note', author: allUsers.find(u => u.id === 'u7')!, time:'5h', createdAt: new Date(now.getTime() - 5 * 60 * 60 * 1000), text:'Excited to announce our pre-seed funding round! The journey is just beginning. #StartupIndia #MakeInIndia', vis:'public', likes:1200, comments: [], reposts:95 },
     { id:'p9', type:'album', author: allUsers.find(u => u.id === 'u1')!, time:'8h', createdAt: new Date(now.getTime() - 8 * 60 * 60 * 1000), text:'Colors of Varanasi', images:[
       'https://picsum.photos/id/201/800/600',
       'https://picsum.photos/id/202/800/600',
-    ], alt:'Scenes from Varanasi ghats', vis:'public', likes:540, comments:62, reposts:25 },
-    { id:'p10', type:'note', author: allUsers.find(u => u.id === 'u3')!, time:'1d', createdAt: new Date(now.getTime() - 24 * 60 * 60 * 1000), text:'Found the best Vada Pav in Mumbai today. Unbelievable!', vis:'followers', likes:95, comments:22, reposts:3 },
-    { id:'p11', type:'note', author: allUsers.find(u => u.id === 'u5')!, time:'1d', createdAt: new Date(now.getTime() - 26 * 60 * 60 * 1000), text:'Working on a new design system inspired by Madhubani art. It is challenging but so rewarding.', vis:'public', likes:880, comments:112, reposts:70 },
+    ], alt:'Scenes from Varanasi ghats', vis:'public', likes:540, comments: [sampleComments[2]], reposts:25 },
+    { id:'p10', type:'note', author: allUsers.find(u => u.id === 'u3')!, time:'1d', createdAt: new Date(now.getTime() - 24 * 60 * 60 * 1000), text:'Found the best Vada Pav in Mumbai today. Unbelievable!', vis:'followers', likes:95, comments: [], reposts:3 },
+    { id:'p11', type:'note', author: allUsers.find(u => u.id === 'u5')!, time:'1d', createdAt: new Date(now.getTime() - 26 * 60 * 60 * 1000), text:'Working on a new design system inspired by Madhubani art. It is challenging but so rewarding.', vis:'public', likes:880, comments: [], reposts:70 },
   ]
 };

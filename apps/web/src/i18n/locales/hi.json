@@ -33,5 +33,12 @@
   "saved": "सहेजे गए",
   "editProfile": "प्रोफ़ाइल संपादित करें",
   "loadMore": "और लोड करें",
-  "adminDescription": "एडमिन और मॉडरेशन उपकरण।"
+  "adminDescription": "एडमिन और मॉडरेशन उपकरण।",
+  "comments": "टिप्पणियाँ",
+  "addCommentPlaceholder": "एक टिप्पणी जोड़ें...",
+  "postComment": "पोस्ट करें",
+  "noCommentsYet": "अभी तक कोई टिप्पणी नहीं। पहले बनें!",
+  "share": "शेयर करें",
+  "copyLink": "लिंक कॉपी करें",
+  "linkCopied": "लिंक क्लिपबोर्ड पर कॉपी हो गया!"
 }

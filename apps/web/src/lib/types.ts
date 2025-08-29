@@ -16,6 +16,13 @@ export interface User {
 
 export type PostType = 'note' | 'album' | 'clip' | 'thread' | 'community' | 'event';
 
+export interface Comment {
+  id: string;
+  author: User;
+  text: string;
+  createdAt: Date;
+}
+
 export interface Post {
   id: string;
   type: PostType;
@@ -32,7 +39,7 @@ export interface Post {
   eventId?: string;
   vis: 'public' | 'followers' | 'friends' | 'community';
   likes: number;
-  comments: number;
+  comments: Comment[];
   reposts: number;
 }
 
@@ -67,6 +74,12 @@ export interface Notification {
     time: string;
 }
 
+export interface Toast {
+  id: number;
+  message: string;
+  type: 'success' | 'error';
+}
+
 export interface AppData {
   isAdmin: boolean;
   quietHours: boolean;
@@ -95,6 +108,9 @@ export interface AppContextType {
   setComposerOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isNotifsOpen: boolean;
   setNotifsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  commentsModalPostId: string | null;
+  setCommentsModalPostId: React.Dispatch<React.SetStateAction<string | null>>;
+  toasts: Toast[];
   actions: {
     addPost: (post: Post) => void;
     addEvent: (event: Event) => void;
@@ -106,5 +122,7 @@ export interface AppContextType {
     toggleEventRsvp: (eventId: string) => void;
     addNotification: (notif: Omit<Notification, 'id' | 'time'>) => void;
     viewProfile: (userId: string) => void;
+    addComment: (postId: string, text: string) => void;
+    addToast: (message: string, type?: 'success' | 'error') => void;
   };
 }

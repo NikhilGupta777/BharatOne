@@ -1,5 +1,5 @@
 import React, { createContext, useState, useCallback, useEffect, useMemo } from 'react';
-import type { AppData, AppContextType, Post, Event, Notification, Route } from '../lib/types';
+import type { AppData, AppContextType, Post, Event, Notification, Route, Comment, Toast, User } from '../lib/types';
 import { initialData } from '../lib/data';
 import { getRankedFeed } from '../services/feedService';
 
@@ -12,9 +12,40 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [currentProfileId, setCurrentProfileId] = useState<string>(data.user.id);
   const [isComposerOpen, setComposerOpen] = useState(false);
   const [isNotifsOpen, setNotifsOpen] = useState(false);
+  const [commentsModalPostId, setCommentsModalPostId] = useState<string | null>(null);
+  const [toasts, setToasts] = useState<Toast[]>([]);
 
   const rankedFeed = useMemo(() => getRankedFeed(data.feed, data.user), [data.feed, data.user]);
   
+  const addToast = (message: string, type: 'success' | 'error' = 'success') => {
+    const id = Date.now();
+    setToasts(prev => [...prev, { id, message, type }]);
+    setTimeout(() => {
+        setToasts(prev => prev.filter(t => t.id !== id));
+    }, 3000);
+  };
+  
+  const addComment = (postId: string, text: string) => {
+    setData(prevData => {
+        const postIndex = prevData.feed.findIndex(p => p.id === postId);
+        if (postIndex === -1) return prevData;
+
+        const newComment: Comment = {
+            id: `c${Math.random().toString(36).slice(2, 9)}`,
+            author: prevData.user as User,
+            text,
+            createdAt: new Date(),
+        };
+
+        const updatedFeed = [...prevData.feed];
+        const updatedPost = { ...updatedFeed[postIndex] };
+        updatedPost.comments = [...updatedPost.comments, newComment];
+        updatedFeed[postIndex] = updatedPost;
+
+        return { ...prevData, feed: updatedFeed };
+    });
+  };
+
   const viewProfile = (userId: string) => {
     setCurrentProfileId(userId);
     setRoute('profile');
@@ -144,6 +175,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setComposerOpen,
     isNotifsOpen,
     setNotifsOpen,
+    commentsModalPostId,
+    setCommentsModalPostId,
+    toasts,
     actions: {
       addPost,
       addEvent,
@@ -155,6 +189,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       toggleEventRsvp,
       addNotification,
       viewProfile,
+      addComment,
+      addToast,
     }
   };
 

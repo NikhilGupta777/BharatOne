@@ -68,7 +68,8 @@ const ComposerModal: React.FC<ComposerModalProps> = ({ isOpen, onClose }) => {
                 createdAt: new Date(),
                 text: eventTitle,
                 eventId: newEvent.id,
-                vis: 'public', likes: 0, comments: 0, reposts: 0,
+                // FIX: Changed comments from number to empty array to match Post type.
+                vis: 'public', likes: 0, comments: [], reposts: 0,
             };
             addPost(newPost);
         } else {
@@ -80,7 +81,8 @@ const ComposerModal: React.FC<ComposerModalProps> = ({ isOpen, onClose }) => {
                 // FIX: Added missing 'createdAt' property.
                 createdAt: new Date(),
                 text: text,
-                vis: 'public', likes: 0, comments: 0, reposts: 0,
+                // FIX: Changed comments from number to empty array to match Post type.
+                vis: 'public', likes: 0, comments: [], reposts: 0,
                 ...(composeType === 'album' && { images: mediaFile ? [URL.createObjectURL(mediaFile)] : [], alt: altText }),
                 ...(composeType === 'clip' && { video: mediaFile ? URL.createObjectURL(mediaFile) : '' }),
                 ...(composeType === 'thread' && { title: text.split('\n')[0], parts: text.split('\n').filter(Boolean) }),

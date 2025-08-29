@@ -31,7 +31,8 @@ const calculatePostScore = (post: Post, currentUser: User): number => {
   // 2. Engagement Score
   const engagementScore = 
     (post.likes * ENGAGEMENT_SCORES.like) +
-    (post.comments * ENGAGEMENT_SCORES.comment) +
+    // FIX: Use post.comments.length for calculation as post.comments is an array.
+    (post.comments.length * ENGAGEMENT_SCORES.comment) +
     (post.reposts * ENGAGEMENT_SCORES.repost);
   // Normalize engagement score to prevent huge numbers from dominating
   const normalizedEngagement = Math.log1p(engagementScore);

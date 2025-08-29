@@ -33,5 +33,12 @@
   "saved": "Saved",
   "editProfile": "Edit Profile",
   "loadMore": "Load More",
-  "adminDescription": "Admin and moderation tools."
+  "adminDescription": "Admin and moderation tools.",
+  "comments": "Comments",
+  "addCommentPlaceholder": "Add a comment...",
+  "postComment": "Post",
+  "noCommentsYet": "No comments yet. Be the first!",
+  "share": "Share",
+  "copyLink": "Copy Link",
+  "linkCopied": "Link copied to clipboard!"
 }

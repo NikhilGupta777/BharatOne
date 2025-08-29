@@ -6,16 +6,18 @@ import RightRail from '../components/layout/RightRail';
 import MainContent from '../components/main/MainContent';
 import ComposerModal from '../components/modals/ComposerModal';
 import NotificationsPanel from '../components/modals/NotificationsPanel';
+import CommentsModal from '../components/modals/CommentsModal';
+import { ToastContainer } from '../components/shared/Toast';
 
 const App: React.FC = () => {
   const {
     data,
-    route,
-    setRoute,
     isComposerOpen,
     setComposerOpen,
     isNotifsOpen,
-    setNotifsOpen
+    setNotifsOpen,
+    commentsModalPostId,
+    setCommentsModalPostId,
   } = useAppContext();
 
   return (
@@ -26,10 +28,8 @@ const App: React.FC = () => {
         notifsCount={data.notifs.length} 
       />
       <div className="app-grid-container mx-auto max-w-[1400px] gap-4 p-4">
-        {/* FIX: Removed props from LeftNav as it consumes data from context. */}
         <LeftNav />
         <MainContent />
-        {/* FIX: Removed props from RightRail as it consumes data from context. */}
         <RightRail />
       </div>
       <ComposerModal 
@@ -41,6 +41,12 @@ const App: React.FC = () => {
         onClose={() => setNotifsOpen(false)}
         notifications={data.notifs}
       />
+      <CommentsModal
+        postId={commentsModalPostId}
+        isOpen={!!commentsModalPostId}
+        onClose={() => setCommentsModalPostId(null)}
+      />
+      <ToastContainer />
     </div>
   );
 };

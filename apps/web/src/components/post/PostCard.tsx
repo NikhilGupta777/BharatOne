@@ -1,23 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import type { Post as PostType, Event } from '../../lib/types';
 import { useAppContext } from '../../hooks/useAppContext';
 import { Avatar, Chip } from '../shared/common';
-import { HeartIcon, CommentIcon, RepostIcon, BookmarksIcon, MoreIcon } from '../shared/Icons';
+import { HeartIcon, CommentIcon, RepostIcon, BookmarksIcon, MoreIcon, ShareIcon } from '../shared/Icons';
 import { fmtCount, timeAgo } from '../../lib/utils';
-
+import SharePopover from '../modals/SharePopover';
 
 interface PostCardProps {
     post: PostType;
 }
 
-const PostActionButton: React.FC<{ icon: React.ElementType; count: number; active?: boolean; onClick?: () => void; }> = ({ icon: Icon, count, active, onClick }) => (
-    <button onClick={onClick} className={`flex items-center gap-1.5 text-xs py-1.5 px-3 rounded-full bg-[#121722] border border-border-color hover:bg-[#1a1f2b] transition-colors ${active ? 'text-red-400' : 'text-text-muted'}`}>
+const PostActionButton: React.FC<{ icon: React.ElementType; count?: number; active?: boolean; onClick?: () => void; children?: React.ReactNode, className?: string }> = 
+({ icon: Icon, count, active, onClick, children, className }) => (
+    <button onClick={onClick} className={`flex items-center gap-1.5 text-xs py-1.5 px-3 rounded-full bg-[#121722] border border-border-color hover:bg-[#1a1f2b] transition-colors ${active ? 'text-red-400' : 'text-text-muted'} ${className}`}>
         <Icon className="h-4 w-4" />
-        <span>{fmtCount(count)}</span>
+        {count !== undefined && <span>{fmtCount(count)}</span>}
+        {children}
     </button>
 );
 
 const PostContent: React.FC<{ post: PostType, events: Event[] }> = ({ post, events }) => {
+    // ... (content remains the same, but simplified for brevity)
     switch (post.type) {
         case 'album':
             return (
@@ -75,13 +78,31 @@ const PostContent: React.FC<{ post: PostType, events: Event[] }> = ({ post, even
 }
 
 const PostCard: React.FC<PostCardProps> = ({ post }) => {
-    const { data, actions } = useAppContext();
+    const { data, actions, setCommentsModalPostId, t } = useAppContext();
+    const [isShareOpen, setShareOpen] = useState(false);
+    const [isAnimatingLike, setAnimatingLike] = useState(false);
+
     const isBookmarked = data.bookmarks.has(post.id);
     const isLiked = data.likes.has(post.id);
 
     const handleProfileClick = (e: React.MouseEvent) => {
         e.stopPropagation();
         actions.viewProfile(post.author.id);
+    };
+
+    const handleLikeClick = () => {
+        if (!isLiked) {
+            setAnimatingLike(true);
+            setTimeout(() => setAnimatingLike(false), 300);
+        }
+        actions.toggleLike(post.id);
+    };
+    
+    const handleCopyLink = () => {
+        const link = `${window.location.origin}/post/${post.id}`; // Dummy link
+        navigator.clipboard.writeText(link);
+        actions.addToast(t('linkCopied'));
+        setShareOpen(false);
     };
 
     return (
@@ -102,12 +123,18 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
                 <PostContent post={post} events={data.events} />
 
                 <div className="flex items-center gap-2 mt-3">
-                    <PostActionButton icon={HeartIcon} count={post.likes} active={isLiked} onClick={() => actions.toggleLike(post.id)} />
-                    <PostActionButton icon={CommentIcon} count={post.comments} />
-                    <PostActionButton icon={RepostIcon} count={post.reposts} />
-                    <button onClick={() => actions.toggleBookmark(post.id)} className={`flex items-center gap-1.5 text-xs py-1.5 px-3 rounded-full bg-[#121722] border border-border-color hover:bg-[#1a1f2b] transition-colors ${isBookmarked ? 'text-indigo-400' : 'text-text-muted'}`}>
-                        <BookmarksIcon className="h-4 w-4" />
+                    <button onClick={handleLikeClick} className={`flex items-center gap-1.5 text-xs py-1.5 px-3 rounded-full bg-[#121722] border border-border-color hover:bg-[#1a1f2b] transition-colors ${isLiked ? 'text-red-400' : 'text-text-muted'}`}>
+                         <HeartIcon className={`h-4 w-4 transition-transform duration-200 ${isAnimatingLike ? 'scale-125' : ''}`} />
+                         <span>{fmtCount(post.likes)}</span>
                     </button>
+                    <PostActionButton icon={CommentIcon} count={post.comments.length} onClick={() => setCommentsModalPostId(post.id)} />
+                    <PostActionButton icon={RepostIcon} count={post.reposts} />
+                     <div className="relative">
+                        <PostActionButton icon={ShareIcon} onClick={() => setShareOpen(s => !s)} />
+                        {isShareOpen && <SharePopover onClose={() => setShareOpen(false)} onCopyLink={handleCopyLink} />}
+                    </div>
+                    <PostActionButton icon={BookmarksIcon} active={isBookmarked} onClick={() => actions.toggleBookmark(post.id)} />
+                    
                     <button className="ml-auto text-text-muted p-1.5 rounded-full hover:bg-[#1a1f2b]"><MoreIcon /></button>
                     <div className="text-[11px] py-1 px-2.5 bg-panel-2 border border-border-color rounded-full text-[#a6b0c1] capitalize">{post.vis}</div>
                 </div>
